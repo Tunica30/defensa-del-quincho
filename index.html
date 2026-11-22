@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Defensa del Quincho</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: #141b31;
+        --fg: #e8eefc;
+        --muted: #93a0c0;
+        --accent: #2ee6ff;
+        --accent2: #ff2d7a;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; overflow: hidden; }
+      canvas { display: block; }
+      #overlay {
+        position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+        padding: 16px; background: radial-gradient(circle at 50% 30%, #1b2550, var(--bg) 70%); z-index: 10; overflow: auto;
+      }
+      #overlay[hidden] { display: none; }
+      .card { width: min(520px, 100%); background: var(--card); border: 1px solid #26305a; border-radius: 18px; padding: 24px; box-shadow: 0 20px 60px #0008; }
+      h1 { margin: 0 0 4px; font-size: 30px; letter-spacing: .5px; }
+      h1 span { color: var(--accent2); }
+      .sub { margin: 0 0 20px; color: var(--muted); }
+      button {
+        width: 100%; padding: 16px; margin: 6px 0; font-size: 18px; font-weight: 700; border-radius: 12px; border: 0; cursor: pointer;
+        background: var(--accent); color: #04101a;
+      }
+      button:disabled { opacity: .45; cursor: not-allowed; }
+      button.secondary { background: #2a3566; color: var(--fg); }
+      button.ghost { background: transparent; color: var(--muted); border: 1px solid #2a3566; font-size: 15px; padding: 10px; }
+      #status { color: var(--muted); font-size: 14px; min-height: 1.2em; }
+      .continue { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: #1d2647; font-size: 15px; cursor: pointer; }
+      .continue[hidden] { display: none; }
+      .continue input { width: 20px; height: 20px; accent-color: var(--accent); }
+      details { color: var(--muted); font-size: 14px; margin-top: 8px; }
+      details li { margin: 3px 0; }
+      #log { white-space: pre-wrap; font-size: 12px; color: #ff8080; margin: 8px 0 0; max-height: 140px; overflow: auto; }
+      #desktop-help {
+        position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 5;
+        background: #000a; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 13px; pointer-events: none; text-align: center;
+      }
+      #desktop-help[hidden] { display: none; }
+      #crosshair { position: fixed; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 2px solid #fff; border-radius: 50%; pointer-events: none; z-index: 4; mix-blend-mode: difference; }
+      #crosshair[hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="overlay">
+      <div class="card">
+        <h1>Defensa del <span>Quincho</span></h1>
+        <p class="sub">Realidad mixta para Meta Quest 3 · Etapa 6</p>
+        <label id="continue-row" class="continue" hidden><input type="checkbox" id="chk-continue" /> <span id="continue-label">Continuar partida guardada</span></label>
+        <button id="btn-ar" disabled>Comprobando WebXR…</button>
+        <button id="btn-desktop" class="secondary">Modo escritorio (prueba)</button>
+        <button id="btn-recal" class="ghost">Borrar calibración guardada</button>
+        <button id="btn-reset" class="ghost">Borrar partida guardada y récord</button>
+        <p id="status"></p>
+        <details>
+          <summary>Controles</summary>
+          <ul>
+            <li><b>Grip</b> cerca del armero: agarrar arma. Volver a apretar y soltar cerca del armero: devolverla.</li>
+            <li><b>Gatillo</b>: disparar · <b>A / X</b>: recargar.</li>
+            <li><b>Mano libre + grip</b>: sacar granada (del cajón si estás cerca). Soltá el grip con un movimiento de lanzamiento. <b>A / X</b> con la mano libre cambia el tipo.</li>
+            <li><b>Sentate en la silla</b> (desde el nivel 8): ametralladora, apuntás con el control derecho.</li>
+            <li><b>Mantener B / Y 2 s</b>: recalibrar.</li>
+            <li>Escritorio: mouse apunta, click dispara, R recarga, 1-4 armas, G granada, T tipo de granada, M ametralladora, click derecho + arrastrar mira, WASD camina, Esc sale.</li>
+          </ul>
+        </details>
+        <pre id="log"></pre>
+      </div>
+    </div>
+    <div id="desktop-help" hidden>Mouse apunta · Click dispara · R recarga · 1-4 armas · G granada · T tipo de granada · M ametralladora · Click der. + arrastrar: mirar · WASD: caminar · Esc: salir</div>
+    <div id="crosshair" hidden></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
